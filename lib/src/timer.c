@@ -150,7 +150,7 @@ static uint64_t measuresuite_time_pmc(struct measuresuite *ms) {
     if (pmcntenset & 0x80000000ul) { // Is it counting?
       __asm volatile("mrc p15, 0, %0, c9, c13, 0" : "=r"(pmccntr));
       // The counter is set up to count every 64th cycle
-      return (uint64_t)(pmccntr)*64; // Should optimize to << 6
+      return (uint64_t)(pmccntr) * 64; // Should optimize to << 6
     }
   }
 #else
@@ -173,7 +173,8 @@ uint64_t current_timestamp() {
 }
 
 // NOLINTNEXTLINE (the inlineasm is not analyzed with clang tidy)
-static uint64_t measuresuite_time_rdtscp() {
+static uint64_t
+measuresuite_time_rdtscp([[maybe_unused]] struct measuresuite *ms) {
   // eax: low 32
   // edx: high 32
   uint64_t result = 0;
