@@ -17,19 +17,18 @@
 import { existsSync } from "fs";
 import { extname } from "path";
 
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-// import * as ms from "measuresuite-native-module"; // for development and get the types and type completion
-const ms = require("measuresuite-native-module");
 declare function assert(value: unknown): asserts value;
 
 import type { MeasureResult, FunctionType } from "./measure.interface";
+
+const path = require("path");
+const ms = require(path.join(__dirname, "../../", "build", "Release", "measuresuite.node"));
 
 // use with caution
 export const native_ms = {
   init: ms.init,
 
-  load_asm_string: ms.load_asm_string,
+  load_asm_string: ms.load_asm_file,
   load_asm_file: ms.load_asm_file,
   load_bin_file: ms.load_bin_file,
   load_elf_file: ms.load_elf_file,
@@ -154,7 +153,9 @@ export class Measuresuite {
 
   public setBounds(bounds: string[]): void {
     if (this.argwidth !== bounds.length) {
-      throw new Error("Illegal arguments. Bounds array must be same size as argwidth, or empty.");
+      throw new Error(
+        `Illegal arguments. Bounds array must be same size as argwidth, or empty. Got ${bounds.length}, must be ${this.argwidth}`,
+      );
     }
     const bigInts = bounds.map((v) => {
       if (["0", "2", "4", "8"].some((end) => v.endsWith(end))) {

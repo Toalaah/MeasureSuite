@@ -3,7 +3,8 @@
   "version": "2.2.2",
   "description": "Typescript wrapper around libmeasuresuite",
   "main": "./ts/dist/index.js",
-  "types": "./ts/dist/dts/index.d.ts",
+  "typings": "./ts/src/index",
+  "trustedDependencies": ["esbuild"],
   "type": "module",
   "files": [
     "./lib/src/**/*.c",
@@ -13,7 +14,8 @@
     "./binding.gyp",
     "./ts/dist/index.js",
     "./ts/dist/dts",
-    "./ts/dist/Readme.md"
+    "./ts/dist/Readme.md",
+    "./build/Release/measuresuite.node"
   ],
   "cpu": [
     "x64"
@@ -43,9 +45,7 @@
     "trailingComma": "all",
     "printWidth": 110
   },
-  "dependencies": {
-    "measuresuite-native-module": "file:./build/Release/measuresuite.node"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@rollup/plugin-typescript": "^12.3.0",
     "@types/node": "^24.9.2",
@@ -61,7 +61,7 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
     "vite": "^7.1.12",
-    "vitest": "^4.0.5"
+    "vitest": "^4.0.16"
   },
   "eslintConfig": {
     "root": true,

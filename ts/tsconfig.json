@@ -4,12 +4,15 @@
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",
-		"ignoreDeprecations": "6.0",
+    "ignoreDeprecations": "6.0",
     "strict": true,
     "esModuleInterop": true,
     "noImplicitAny": true,
     "declaration": true,
-    "declarationDir": "dist/dts"
+    "declarationDir": "dist/dts",
+    "paths": {
+      "@root/*": ["./*"]
+    }
   },
   "include": ["./src/*.ts"],
   "exclude": ["./node_modules", "dist", "coverage"]

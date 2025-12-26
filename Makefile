@@ -28,17 +28,22 @@ endif
 
 # use make -B DEBUG=1 CFLAGS='-g' for debug output and better debugging experience
 
-.PHONY: all check clean 
+.PHONY: all check clean ts
 
 .PRECIOUS: libmeasuresuite.so libmeasuresuite.a ms
 
-all: lib/libmeasuresuite.so lib/libmeasuresuite.a ms
+all: lib/libmeasuresuite.so lib/libmeasuresuite.a ms ts
 
 lib/libmeasuresuite.a lib/libmeasuresuite.so:
 	$(MAKE) -C lib $(subst lib/,,$(@))
 
 ms:  bin/arg_parse.c bin/ms.c lib/libmeasuresuite.a 
 	$(CC) $(CFLAGS) -I./lib/src/include $(^) $(CPPFLAGS) $(LDLIBS) -o $(@)
+
+ts:
+	node-gyp rebuild
+	bun build ./ts/src/*.ts --outdir ./ts/dist --target=node --production
+	cp Readme.md ./ts/dist
 
 publish: clean
 	 tsc --emitDeclarationOnly -p ./ts/
@@ -51,7 +56,8 @@ clean:
 	rm -rf ms \
 		ts/coverage \
 		ts/dist \
-		build
+		build \
+		node_modules
 	$(MAKE) -C lib $(@)
 
 check: ms
